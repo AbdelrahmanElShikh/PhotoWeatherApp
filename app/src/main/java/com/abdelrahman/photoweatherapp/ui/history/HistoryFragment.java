@@ -125,7 +125,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener, P
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             if (ImageUtils.getImagePath() != null)
-                navController().navigate(HistoryFragmentDirections.actionFromHistoryToPhotoCameraFragment(ImageUtils.getImagePath()));
+                navController().navigate(HistoryFragmentDirections.actionFromHistoryToNewCameraPhotoFragment(ImageUtils.getImagePath()));
         }
     }
 

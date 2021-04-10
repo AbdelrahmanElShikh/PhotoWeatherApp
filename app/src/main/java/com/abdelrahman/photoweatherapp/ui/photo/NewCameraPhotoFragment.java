@@ -37,13 +37,15 @@ import com.abdelrahman.photoweatherapp.utils.ImageUtils;
 import com.abdelrahman.photoweatherapp.utils.errorchains.domain.chains.DomainErrorChain;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Objects;
+
 
 /**
  * @Author : Abdel-Rahman El-Shikh
  * @Date : 09-Apr-21
  * @Project : com.abdelrahman.photoweatherapp
  */
-public class PhotoCameraFragment extends BasePhotoFragment implements LocationListener {
+public class NewCameraPhotoFragment extends BasePhotoFragment implements LocationListener {
     private static final String TAG = "PhotoFragment";
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private FragmentPhotoBinding binding;
@@ -55,16 +57,16 @@ public class PhotoCameraFragment extends BasePhotoFragment implements LocationLi
     private final DomainErrorChain domainErrorChain = DomainErrorChain.Builder()
             .buildWithDefaultChainLinks();
     private Snackbar snackbar;
-    private final Observer<PresentationResource<WeatherData>> remoteWeatherDataObserver = (Observer<PresentationResource<WeatherData>>) weatherData -> {
+    private final Observer<PresentationResource<WeatherData>> remoteWeatherDataObserver = weatherData -> {
         switch (weatherData.getStatus()) {
             case LOADING:
                 showProgressbar();
                 break;
             case SUCCESS:
-                handleOverLayWithData(weatherData.getData());
+                handleOverLayWithData(Objects.requireNonNull(weatherData.getData()));
                 break;
             case API_ERROR:
-                Snackbar.make(getView(), weatherData.getApiError().getApiErrorMessage(), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(requireView(), Objects.requireNonNull(Objects.requireNonNull(weatherData.getApiError()).getApiErrorMessage()), Snackbar.LENGTH_SHORT).show();
                 break;
             case DOMAIN_ERROR:
                 domainErrorChain.execute(weatherData.getThrowable(), this, () -> viewModel.getWeatherData(userLocation.getLatitude(), userLocation.getLongitude()));
@@ -107,7 +109,7 @@ public class PhotoCameraFragment extends BasePhotoFragment implements LocationLi
 
     private void handleImageInRoom() {
         binding.container.post(() -> {
-            ImageUtils.saveImageIntoTempFile(getActivity(), binding.container);
+            ImageUtils.saveImageIntoTempFile(requireActivity(), binding.container);
             saveImagePathIntoRoom();
         });
     }
@@ -116,8 +118,9 @@ public class PhotoCameraFragment extends BasePhotoFragment implements LocationLi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(WeatherDataViewModel.class);
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        imagePath = PhotoCameraFragmentArgs.fromBundle(getArguments()).getImagePath();
+        locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
+        assert getArguments() != null;
+        imagePath = NewCameraPhotoFragmentArgs.fromBundle(getArguments()).getImagePath();
     }
 
     @Nullable
@@ -132,8 +135,8 @@ public class PhotoCameraFragment extends BasePhotoFragment implements LocationLi
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         showProgressbar();
         checkPermission();
     }
@@ -171,7 +174,7 @@ public class PhotoCameraFragment extends BasePhotoFragment implements LocationLi
     }
 
     private void checkPermission() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 400, 1, this);
         } else {
             requestLocationPermission();
@@ -179,7 +182,7 @@ public class PhotoCameraFragment extends BasePhotoFragment implements LocationLi
     }
 
     private void requestLocationPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION)) {
             handleLocationPermissionDeny();
         } else {
@@ -205,7 +208,7 @@ public class PhotoCameraFragment extends BasePhotoFragment implements LocationLi
 
     void handleLocationPermissionDeny() {
         hideProgressBar();
-        snackbar = Snackbar.make(binding.container, "Location permission is required", Snackbar.LENGTH_INDEFINITE)
+        snackbar = Snackbar.make(requireView(), R.string.locationRationale, Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.settings, view -> {
                     Intent intent = new Intent();
                     intent.setAction(
@@ -222,7 +225,7 @@ public class PhotoCameraFragment extends BasePhotoFragment implements LocationLi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(snackbar != null ){
+        if (snackbar != null) {
             snackbar.dismiss();
         }
     }
