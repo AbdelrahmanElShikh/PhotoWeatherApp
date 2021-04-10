@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">صورة الطقس</string>
+    <!--Permissions-->
+    <string name="button_allow">السماح</string>
+    <string name="button_cancel">إلغاء</string>
+    <string name="camera">كاميرا</string>
+    <string name="cameraRationale">ينبغي ان تسمح باستخدام الكاميرا لتتمكن من التقاط الصورة</string>
+    <string name="settings">الاعدادات</string>
+    <string name="location">الموقع</string>
+    <string name="locationRationale">ينبغي ان تسمح باستخدام خاصية الموقع</string>
+    <string name="storage">التخزين</string>
+    <string name="storageRationale">ينبغي ان تسمح بحفظ الصور علي الهاتف</string>
+    <string name="ok">نعم</string>
+    <!--New Photo-->
+    <string name="new_photo">صورة جديدة</string>
+    <string name="share">مشاركة</string>
+
+    <!--Error handlers-->
+    <string name="no_internet_connection_message">لا يوجد اتصال بالانترنت برجاء التاكد من اتصال الهاتف الخاص بك بالانترنت.</string>
+    <string name="general_error_msg">حدث خطأ غير معروف. برجاء حاول مرة اخرى لاحقاً.</string>
+    <string name="retry_btn_title">إعادة المحاولة</string>
+    <string name="error_connection_timeout">فقد الاتصال بالشبكة. الرجاء التحقق من اتصال الإنترنت الخاص بك.</string>
+    <string name="no_data">لا توجد صور</string>
+    <string name="not_allowed">غير مسموح</string>
+
+</resources>

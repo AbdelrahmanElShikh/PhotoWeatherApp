@@ -1,0 +1,25 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    //json
+    implementation 'org.json:json:20200518'
+    //RxJava
+    def rxJavaVersion = '2.1.1'
+    implementation "io.reactivex.rxjava2:rxandroid:$rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    //logger
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.4.0'
+}
