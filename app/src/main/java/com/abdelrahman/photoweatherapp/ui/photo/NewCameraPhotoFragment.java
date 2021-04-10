@@ -25,6 +25,8 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.abdelrahman.core.models.WeatherData;
 import com.abdelrahman.core.resource.PresentationResource;
@@ -74,18 +76,13 @@ public class NewCameraPhotoFragment extends BasePhotoFragment implements Locatio
         hideProgressBar();
     };
 
-    private void showProgressbar() {
-        binding.progressbar.setVisibility(View.VISIBLE);
-    }
-
     private final Observer<PresentationResource<Boolean>> roomInsertObserver = isPhotoSaved -> {
         switch (isPhotoSaved.getStatus()) {
             case LOADING:
                 showProgressbar();
                 break;
             case DOMAIN_ERROR:
-                domainErrorChain.execute(isPhotoSaved.getThrowable(), this,
-                        () -> viewModel.insertPhoto(new WeatherPhoto(ImageUtils.getImagePath(), ImageUtils.getFile().getAbsolutePath())));
+                Log.e(TAG, "roomInsertObserver: " + Objects.requireNonNull(isPhotoSaved.getThrowable()).getLocalizedMessage());
                 break;
             case SUCCESS:
                 //sharing is disabled till the image with the overlay is processed and saved to room db.
@@ -95,6 +92,11 @@ public class NewCameraPhotoFragment extends BasePhotoFragment implements Locatio
         }
         hideProgressBar();
     };
+
+    private void showProgressbar() {
+        binding.progressbar.setVisibility(View.VISIBLE);
+    }
+
 
     private void handleOverLayWithData(WeatherData weatherData) {
         String location = weatherData.getSys().getCountry() + " , " + weatherData.getName();
@@ -173,6 +175,21 @@ public class NewCameraPhotoFragment extends BasePhotoFragment implements Locatio
         viewModel.getWeatherData(location.getLatitude(), location.getLongitude()).observe(this, remoteWeatherDataObserver);
     }
 
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
     private void checkPermission() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 400, 1, this);
@@ -218,8 +235,12 @@ public class NewCameraPhotoFragment extends BasePhotoFragment implements Locatio
                     intent.setData(uri);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
+                    navController().navigateUp();
                 });
         snackbar.show();
+    }
+    private NavController navController() {
+        return NavHostFragment.findNavController(this);
     }
 
     @Override

@@ -18,7 +18,7 @@
 
     <!--Error handlers-->
     <string name="no_internet_connection_message">لا يوجد اتصال بالانترنت برجاء التاكد من اتصال الهاتف الخاص بك بالانترنت.</string>
-    <string name="general_error_msg">حدث خطأ غير معروف. برجاء حاول مرة اخرى لاحقاً.</string>
+    <string name="general_error_msg">حدث خطأ غير معروف.</string>
     <string name="retry_btn_title">إعادة المحاولة</string>
     <string name="error_connection_timeout">فقد الاتصال بالشبكة. الرجاء التحقق من اتصال الإنترنت الخاص بك.</string>
     <string name="no_data">لا توجد صور</string>

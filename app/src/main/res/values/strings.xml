@@ -16,7 +16,7 @@
     <string name="ok">OK</string>
     <!--Error handlers-->
     <string name="no_internet_connection_message">No internet connection. Make sure your phone is connected to the internet to continue. </string>
-    <string name="general_error_msg">An unknown error occurred. Please try again later.</string>
+    <string name="general_error_msg">An unknown error occurred</string>
     <string name="retry_btn_title">Retry</string>
     <string name="error_connection_timeout">Request timed out. Make sure your internet connection is working properly and try again later.</string>
     <string name="no_data">No Photos in the room, Feel free to fill the room with your weather photos.</string>

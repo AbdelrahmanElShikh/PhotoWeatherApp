@@ -20,7 +20,7 @@ import io.reactivex.Observable;
  */
 @Dao
 public interface WeatherPhotoDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     Completable insertWeatherPhoto(WeatherPhoto weatherPhoto);
 
     @Query("SELECT * FROM WEATHER_PHOTO_TABLE")
